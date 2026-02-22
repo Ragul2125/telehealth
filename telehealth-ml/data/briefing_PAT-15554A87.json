@@ -1,0 +1,270 @@
+{
+  "patientId": "PAT-15554A87",
+  "summary": "Patient PAT-15554A87 was monitored across 500 readings. 77 anomalous readings (15%) were flagged. Risk distribution \u2014 LOW: 452, MODERATE: 48. Peak risk score: 0.498.\n\nKey findings: High anomaly rate: 15% of readings flagged as anomalous; Tachycardia episodes: 34 readings with HR > 120 bpm; Hypertension episodes: 6 readings with SBP > 150 mmHg; Heart rate peaked at 159.6 bpm (mean 79.5 bpm); Systolic BP peaked at 174.3 mmHg (mean 120.3 mmHg); Most significant events: ML anomaly detector triggered (score=-0.126); Tachycardia detected: HR=142 bpm (risk=MODERATE, score=0.48); ML anomaly detector triggered (score=-0.131); Tachycardia detected: HR=135 bpm (risk=MODERATE, score=0.48); ML anomaly detector triggered (score=-0.113); Tachycardia detected: HR=151 bpm (risk=MODERATE, score=0.47).\n\nModerate level of concern \u2014 continued monitoring warranted.",
+  "urgencyLevel": "MODERATE",
+  "riskHighlights": [
+    "Heart rate peaked at 159.6 bpm",
+    "Systolic BP peaked at 174.3 mmHg"
+  ],
+  "trendFindings": [
+    "High anomaly rate: 15% of readings flagged as anomalous",
+    "Tachycardia episodes: 34 readings with HR > 120 bpm",
+    "Hypertension episodes: 6 readings with SBP > 150 mmHg"
+  ],
+  "ragFindings": [
+    "Patient PAT-15554A87 at 2025-01-02T20:04:00: ANOMALY DETECTED. Risk level: MODERATE (score=0.475). Heart rate=142.1bpm, SpO2=98.2%, SystolicBP=126.1mmHg, DiastolicBP=85.3mmHg, Temperature=37.07C. Reasons: ML anomaly detector triggered (score=-0.126); Tachycardia detected: HR=142 bpm.",
+    "Patient PAT-15554A87 at 2025-01-02T23:59:00: ANOMALY DETECTED. Risk level: MODERATE (score=0.478). Heart rate=135.3bpm, SpO2=97.9%, SystolicBP=124.3mmHg, DiastolicBP=77.8mmHg, Temperature=36.72C. Reasons: ML anomaly detector triggered (score=-0.131); Tachycardia detected: HR=135 bpm.",
+    "Patient PAT-15554A87 at 2025-01-02T20:11:00: ANOMALY DETECTED. Risk level: MODERATE (score=0.468). Heart rate=151.3bpm, SpO2=98.1%, SystolicBP=117.9mmHg, DiastolicBP=78.4mmHg, Temperature=36.94C. Reasons: ML anomaly detector triggered (score=-0.113); Tachycardia detected: HR=151 bpm.",
+    "Patient PAT-15554A87 at 2025-01-02T21:24:00: ANOMALY DETECTED. Risk level: MODERATE (score=0.484). Heart rate=159.6bpm, SpO2=97.4%, SystolicBP=117.5mmHg, DiastolicBP=72.9mmHg, Temperature=36.95C. Reasons: ML anomaly detector triggered (score=-0.140); Tachycardia detected: HR=160 bpm.",
+    "Patient PAT-15554A87 at 2025-01-02T21:23:00: ANOMALY DETECTED. Risk level: MODERATE (score=0.483). Heart rate=123.8bpm, SpO2=97.1%, SystolicBP=118.0mmHg, DiastolicBP=80.3mmHg, Temperature=36.97C. Reasons: ML anomaly detector triggered (score=-0.138); Tachycardia detected: HR=124 bpm."
+  ],
+  "alerts": [
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T23:55:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4976,
+      "isolationForestScore": -0.1627,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.163)",
+        "Tachycardia detected: HR=123 bpm"
+      ],
+      "vitals": {
+        "heartRate": 122.9,
+        "spo2": 96.9,
+        "systolicBP": 116.9,
+        "diastolicBP": 71.6,
+        "temperature": 36.62
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T21:21:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4952,
+      "isolationForestScore": -0.1586,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.159)",
+        "Tachycardia detected: HR=157 bpm"
+      ],
+      "vitals": {
+        "heartRate": 157.3,
+        "spo2": 98.8,
+        "systolicBP": 129.2,
+        "diastolicBP": 82.3,
+        "temperature": 37.08
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T23:24:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4925,
+      "isolationForestScore": -0.0876,
+      "ruleBasedScore": 0.35,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.088)",
+        "Systolic hypertension: BP=165 mmHg",
+        "Diastolic hypertension: BP=102 mmHg"
+      ],
+      "vitals": {
+        "heartRate": 76.5,
+        "spo2": 98.6,
+        "systolicBP": 164.7,
+        "diastolicBP": 102.4,
+        "temperature": 36.81
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T20:09:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4913,
+      "isolationForestScore": -0.1522,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.152)",
+        "Tachycardia detected: HR=134 bpm"
+      ],
+      "vitals": {
+        "heartRate": 134.0,
+        "spo2": 98.9,
+        "systolicBP": 118.9,
+        "diastolicBP": 78.4,
+        "temperature": 37.31
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T23:58:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4901,
+      "isolationForestScore": -0.1501,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.150)",
+        "Tachycardia detected: HR=126 bpm"
+      ],
+      "vitals": {
+        "heartRate": 125.8,
+        "spo2": 96.5,
+        "systolicBP": 120.9,
+        "diastolicBP": 73.9,
+        "temperature": 36.7
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T21:22:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4869,
+      "isolationForestScore": -0.1449,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.145)",
+        "Tachycardia detected: HR=145 bpm"
+      ],
+      "vitals": {
+        "heartRate": 144.9,
+        "spo2": 97.9,
+        "systolicBP": 122.8,
+        "diastolicBP": 78.1,
+        "temperature": 36.95
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T23:20:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4858,
+      "isolationForestScore": -0.0764,
+      "ruleBasedScore": 0.35,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.076)",
+        "Systolic hypertension: BP=174 mmHg",
+        "Diastolic hypertension: BP=105 mmHg"
+      ],
+      "vitals": {
+        "heartRate": 84.4,
+        "spo2": 97.4,
+        "systolicBP": 174.3,
+        "diastolicBP": 104.9,
+        "temperature": 37.13
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T20:13:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.485,
+      "isolationForestScore": -0.1416,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.142)",
+        "Tachycardia detected: HR=122 bpm"
+      ],
+      "vitals": {
+        "heartRate": 122.3,
+        "spo2": 96.8,
+        "systolicBP": 112.6,
+        "diastolicBP": 77.5,
+        "temperature": 36.71
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T21:24:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4842,
+      "isolationForestScore": -0.1403,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.140)",
+        "Tachycardia detected: HR=160 bpm"
+      ],
+      "vitals": {
+        "heartRate": 159.6,
+        "spo2": 97.4,
+        "systolicBP": 117.5,
+        "diastolicBP": 72.9,
+        "temperature": 36.95
+      },
+      "inferenceLatencyMs": 0.6
+    },
+    {
+      "patientId": "PAT-15554A87",
+      "timestamp": "2025-01-02T21:23:00",
+      "riskLevel": "MODERATE",
+      "anomalyDetected": "True",
+      "combinedRiskScore": 0.4828,
+      "isolationForestScore": -0.138,
+      "ruleBasedScore": 0.25,
+      "reasons": [
+        "ML anomaly detector triggered (score=-0.138)",
+        "Tachycardia detected: HR=124 bpm"
+      ],
+      "vitals": {
+        "heartRate": 123.8,
+        "spo2": 97.1,
+        "systolicBP": 118.0,
+        "diastolicBP": 80.3,
+        "temperature": 36.97
+      },
+      "inferenceLatencyMs": 0.6
+    }
+  ],
+  "vitalRanges": {
+    "heartRate": {
+      "min": 59.3,
+      "max": 159.6,
+      "mean": 79.5
+    },
+    "spo2": {
+      "min": 95.2,
+      "max": 99.6,
+      "mean": 97.5
+    },
+    "systolicBP": {
+      "min": 107.2,
+      "max": 174.3,
+      "mean": 120.3
+    },
+    "diastolicBP": {
+      "min": 70.1,
+      "max": 107.0,
+      "mean": 77.2
+    },
+    "temperature": {
+      "min": 36.4,
+      "max": 37.3,
+      "mean": 36.9
+    }
+  },
+  "riskDistribution": {
+    "LOW": 452,
+    "MODERATE": 48
+  },
+  "disclaimer": "\u2695\ufe0f DISCLAIMER: This summary is AI-generated and should support, not replace, clinical judgment. All clinical decisions must be made by qualified healthcare professionals.",
+  "generatedAt": "2026-02-22T05:16:48.711804+00:00",
+  "totalLatencyMs": 491.0,
+  "briefingMode": "local-rag"
+}

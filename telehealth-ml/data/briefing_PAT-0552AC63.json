@@ -1,0 +1,10 @@
+{
+  "patientId": "PAT-0552AC63",
+  "briefingText": "Patient PAT-0552AC63 was monitored over 500 readings. 65 anomalous readings (13%) were flagged. Risk distribution: {\"LOW\": 458, \"MODERATE\": 42}. Peak risk score: 0.524.\n\nKey findings: Critical SpO2 dip detected: minimum 80.3%; Tachycardia episodes: 16 readings with HR > 120 bpm; Hypertension episodes: 7 readings with SBP > 150 mmHg.\n\nModerate level of concern \u2014 continued monitoring warranted.",
+  "urgencyLevel": "MODERATE",
+  "anomalyCount": 65,
+  "totalReadings": 500,
+  "disclaimer": "\u2695\ufe0f DISCLAIMER: This summary is AI-generated and should support, not replace, clinical judgment. All clinical decisions must be made by qualified healthcare professionals.",
+  "generatedAt": "2026-02-22T04:29:32.331736+00:00",
+  "totalLatencyMs": 6615.0
+}

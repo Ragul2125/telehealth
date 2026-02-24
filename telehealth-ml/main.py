@@ -59,6 +59,83 @@ def cmd_generate(args):
     logger.info("✅ Dataset generated: %d records → %s", len(df), path)
 
 
+def cmd_kaggle_load(args):
+    """Download Kaggle dataset → convert → save as synthetic_dataset.csv."""
+    from data.kaggle_loader import KaggleDataLoader
+
+    logger = logging.getLogger("main.kaggle-load")
+    print("\n" + "=" * 60)
+    print("📥 KAGGLE REAL DATASET LOADER")
+    print("=" * 60)
+    print(f"\n🌐 Dataset: nasirayub2/human-vital-sign-dataset")
+    print(f"📁 Output:  {SYNTHETIC_DATASET_PATH}\n")
+
+    loader = KaggleDataLoader(max_rows=args.max_rows)
+    df = loader.load_and_convert()
+
+    print(f"\n✅ Loaded {len(df):,} records from {df['patient_id'].nunique()} unique patients")
+    print(f"   Anomalies: {df['is_anomaly'].sum():,} ({100.0 * df['is_anomaly'].sum() / max(len(df),1):.1f}%)")
+    print(f"   Columns:   {df.columns.tolist()}")
+    print(f"\n📋 Sample (first 3 rows):")
+    print(df[["patient_id", "timestamp", "heart_rate", "spo2", "systolic_bp", "temperature", "is_anomaly"]].head(3).to_string(index=False))
+    print(f"\n✅ Saved to {SYNTHETIC_DATASET_PATH}")
+    print("\n💡 Next step: python main.py train")
+    print("=" * 60)
+
+
+def cmd_kaggle_demo(args):
+    """Full real-data pipeline: kaggle-load → train → batch → index."""
+    logger = logging.getLogger("main.kaggle-demo")
+
+    print("\n" + "=" * 60)
+    print("🏥 TELEHEALTH ML — REAL DATA PIPELINE")
+    print("=" * 60)
+
+    # Step 1: Download + convert
+    print("\n📥 Step 1/4: Downloading & converting Kaggle dataset...")
+    from data.kaggle_loader import KaggleDataLoader
+    loader = KaggleDataLoader(max_rows=args.max_rows)
+    df = loader.load_and_convert()
+    print(f"   ✅ {len(df):,} records | {df['patient_id'].nunique()} patients | {df['is_anomaly'].sum():,} anomalies\n")
+
+    # Step 2: Train
+    print("🧠 Step 2/4: Training IsolationForest on real data...")
+    from models.train import ModelTrainer
+    trainer = ModelTrainer()
+    meta = trainer.train()
+    print(f"   ✅ Trained on {meta['training_records']:,} normal records in {meta['training_time_sec']}s\n")
+
+    # Step 3: Batch inference
+    print("🔍 Step 3/4: Running batch inference...")
+    from alerts.alert_engine import AlertEngine
+    from models.inference import InferenceEngine
+    from simulator.stream_simulator import BatchProcessor
+    engine = InferenceEngine()
+    alert_engine = AlertEngine()
+    processor = BatchProcessor(engine, alert_engine)
+    output = processor.process()
+
+    with open(FULL_RESULTS_PATH, "w") as f:
+        json.dump(output["results"], f, default=str)
+    print(f"   📁 Full results saved to {FULL_RESULTS_PATH}")
+    print(f"   ✅ {len(output['results']):,} records processed, {len(output['alerts'])} alerts generated\n")
+
+    # Step 4: Build vector index
+    print("🔎 Step 4/4: Building local ChromaDB vector index...")
+    n_indexed = _build_vector_index(output["results"])
+    print(f"   ✅ Indexed {n_indexed:,} records\n")
+
+    patient_ids = sorted({r["patientId"] for r in output["results"] if r.get("patientId")})
+    if patient_ids:
+        print(f"   📋 Available patient IDs:")
+        for pid in patient_ids[:5]:
+            print(f"      • {pid}")
+        print(f"\n   💡 Try: python main.py brief --patient-id {patient_ids[0]}")
+
+    print("\n🏁 Real-data pipeline complete!\n")
+    print("=" * 60)
+
+
 def cmd_train(args):
     """Train the IsolationForest model."""
     from models.train import ModelTrainer
@@ -329,6 +406,26 @@ Examples:
     gen_parser.add_argument("--records", type=int, default=500, help="Records per patient")
     gen_parser.add_argument("--anomaly-rate", type=float, default=0.08, help="Anomaly rate (0-1)")
 
+    # kaggle-load
+    kaggle_parser = subparsers.add_parser(
+        "kaggle-load",
+        help="Download real Kaggle vitals dataset → convert → save as synthetic_dataset.csv",
+    )
+    kaggle_parser.add_argument(
+        "--max-rows", type=int, default=None,
+        help="Max rows to load (default: all). Use e.g. 50000 for a quick test.",
+    )
+
+    # kaggle-demo
+    kdemo_parser = subparsers.add_parser(
+        "kaggle-demo",
+        help="Full real-data pipeline: kaggle-load → train → batch → index",
+    )
+    kdemo_parser.add_argument(
+        "--max-rows", type=int, default=None,
+        help="Max rows to load from Kaggle (default: all).",
+    )
+
     # train
     subparsers.add_parser("train", help="Train IsolationForest model")
 
@@ -363,13 +460,15 @@ Examples:
     setup_logging()
 
     commands = {
-        "generate": cmd_generate,
-        "train":    cmd_train,
-        "batch":    cmd_batch,
-        "simulate": cmd_simulate,
-        "demo":     cmd_demo,
-        "index":    cmd_index,
-        "brief":    cmd_brief,
+        "generate":    cmd_generate,
+        "train":       cmd_train,
+        "batch":       cmd_batch,
+        "simulate":    cmd_simulate,
+        "demo":        cmd_demo,
+        "index":       cmd_index,
+        "brief":       cmd_brief,
+        "kaggle-load": cmd_kaggle_load,
+        "kaggle-demo": cmd_kaggle_demo,
     }
     commands[args.command](args)
 

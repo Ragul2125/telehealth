@@ -133,6 +133,30 @@ def _load_full_results() -> list[dict]:
     return data if isinstance(data, list) else data.get("results", [])
 
 
+def _to_external_reading(r: dict) -> dict:
+    """Convert internal snake_case vitals → camelCase for frontend charts."""
+    # Handle both raw vitals dict and the 'vitals' sub-dict in inference results
+    v = r.get("vitals", r)
+    
+    def _to_num(val, default=0.0):
+        try:
+            return float(val) if val is not None else default
+        except (ValueError, TypeError):
+            return default
+
+    return {
+        "timestamp": r.get("timestamp"),
+        "heartRate": _to_num(v.get("heart_rate") or v.get("heartRate")),
+        "spo2": _to_num(v.get("spo2")),
+        "systolicBP": _to_num(v.get("systolic_bp") or v.get("systolicBP")),
+        "diastolicBP": _to_num(v.get("diastolic_bp") or v.get("diastolicBP")),
+        "temperature": _to_num(v.get("temperature")),
+        "riskScore": _to_num(r.get("combinedRiskScore")),
+        "riskLevel": r.get("riskLevel", "LOW"),
+    }
+
+
+
 # ══════════════════════════════════════════════════════════════
 # Routes
 # ══════════════════════════════════════════════════════════════
@@ -158,6 +182,21 @@ def submit_vitals(payload: VitalsPayload):
     _patient_history[pid] = _patient_history[pid][-500:]
     logger.info("Vitals received for %s (history=%d)", pid, len(_patient_history[pid]))
     return {"status": "accepted", "patientId": pid, "readingsInSession": len(_patient_history[pid])}
+
+
+@app.get("/vitals/{patient_id}", tags=["Vitals"])
+def get_vitals_history(patient_id: str, limit: int = 500):
+    """Return historical vitals for a patient from full_results.json."""
+    all_results = _load_full_results()
+    # Filter for patient and sort by time
+    patient_results = [r for r in all_results if r.get("patientId") == patient_id]
+    patient_results.sort(key=lambda r: r.get("timestamp", ""))
+
+    if not patient_results:
+        return []
+
+    return [_to_external_reading(r) for r in patient_results[-limit:]]
+
 
 
 # ── 2. Run inference ─────────────────────────────────────────
@@ -242,6 +281,7 @@ def get_alerts(patient_id: str, limit: int = 50):
     patient_results = [r for r in all_results if r.get("patientId") == patient_id]
 
     if not patient_results:
+        logger.info("No alerts found for patient %s (no historical data)", patient_id)
         return []
 
     # Evaluate alerts from stored inference results
@@ -263,7 +303,15 @@ def get_briefing(patient_id: str, mode: str = "text"):
     patient_results = [r for r in all_results if r.get("patientId") == patient_id]
 
     if not patient_results:
-        raise HTTPException(404, detail=f"No data found for patient {patient_id}.")
+        return {
+            "patientId": patient_id,
+            "briefingText": "No historical vitals data found for this patient ID. AI Briefing unavailable.",
+            "urgencyLevel": "LOW",
+            "riskHighlights": [],
+            "trendFindings": [],
+            "generatedAt": datetime.now(timezone.utc).isoformat(),
+            "briefingMode": "none"
+        }
 
     try:
         briefing = _briefing_agent.generate_briefing(patient_results, patient_id, mode=mode)

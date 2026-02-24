@@ -35,9 +35,23 @@ export const runInference = async (patientId) => {
 };
 
 /**
+ * Fetch historical vitals for a patient.
+ * @param {string} patientId
+ */
+export const getVitalsHistory = async (patientId) => {
+    try {
+        const { data } = await axiosClient.get(`/vitals/${patientId}`);
+        return data;
+    } catch {
+        return [];
+    }
+};
+
+/**
  * Submit vitals and immediately run inference — combined utility.
  */
 export const submitAndInfer = async (vitals) => {
     await submitVitals(vitals);
     return runInference(vitals.patientId);
 };
+

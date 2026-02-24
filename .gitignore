@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Telehealth ML Data (Large/Generated)
+telehealth-ml/data/chroma_db/
+telehealth-ml/data/*.csv
+telehealth-ml/data/*.json
+telehealth-ml/models/*.joblib
+telehealth-ml/server_log.txt
+telehealth-ml/err.txt
+
+# Environments
+.env
+.env.local
+.venv
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db

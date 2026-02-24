@@ -214,20 +214,20 @@ export default function DoctorDashboard() {
                 {/* Stats row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <StatCard
-                        label="Heart Rate" value={latest?.heartRate?.toFixed(0)} unit="bpm"
+                        label="Heart Rate" value={Number(latest?.heartRate)?.toFixed(0)} unit="bpm"
                         sub="Last reading" color="indigo" icon={Activity}
                     />
                     <StatCard
-                        label="SpO₂" value={latest?.spo2?.toFixed(1)} unit="%"
+                        label="SpO₂" value={Number(latest?.spo2)?.toFixed(1)} unit="%"
                         sub="Blood oxygen" color="emerald" icon={Zap}
                     />
                     <StatCard
-                        label="Systolic BP" value={latest?.systolicBP?.toFixed(0)} unit="mmHg"
+                        label="Systolic BP" value={Number(latest?.systolicBP)?.toFixed(0)} unit="mmHg"
                         sub="Blood pressure" color="amber" icon={Activity}
                     />
                     <StatCard
                         label="Risk Score"
-                        value={currentInference ? (currentInference.combinedRiskScore * 100).toFixed(0) : '—'}
+                        value={currentInference ? (Number(currentInference.combinedRiskScore) * 100).toFixed(0) : '—'}
                         unit="%"
                         sub={currentInference?.anomalyDetected ? '⚠ Anomaly' : 'Normal'}
                         color={currentInference?.riskLevel === 'HIGH' ? 'red' : 'indigo'}

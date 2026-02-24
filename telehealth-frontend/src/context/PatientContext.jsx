@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { getAlerts } from '../api/alertsApi';
-import { runInference } from '../api/vitalsApi';
+import { runInference, getVitalsHistory } from '../api/vitalsApi';
 
 const PatientContext = createContext(null);
 
@@ -24,7 +24,7 @@ function generateDemoVitals(patientId) {
 }
 
 export function PatientProvider({ children }) {
-    const [activePatientId, setActivePatientId] = useState('PAT-15554A87');
+    const [activePatientId, setActivePatientId] = useState('PAT-KAGGLE01');
     const [vitalsHistory, setVitalsHistory] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [currentInference, setCurrentInference] = useState(null);
@@ -35,8 +35,14 @@ export function PatientProvider({ children }) {
         setLoadingAlerts(true);
         setLoadingInference(true);
 
-        // Generate demo vitals history
-        setVitalsHistory(generateDemoVitals(patientId));
+        // Load vitals history (Real data from backend or fallback to demo)
+        const historyData = await getVitalsHistory(patientId);
+        if (historyData && historyData.length > 0) {
+            setVitalsHistory(historyData);
+        } else {
+            console.log(`No backend history for ${patientId}, using demo waves.`);
+            setVitalsHistory(generateDemoVitals(patientId));
+        }
 
         // Load alerts
         try {

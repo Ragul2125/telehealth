@@ -55,7 +55,7 @@ const CustomTooltip = ({ active, payload, label, unit }) => {
             <p className="text-gray-500 dark:text-gray-400 mb-1">{label}</p>
             {payload.map((p) => (
                 <p key={p.dataKey} className="font-semibold" style={{ color: p.color }}>
-                    {p.name}: {typeof p.value === 'number' ? p.value.toFixed(1) : p.value}
+                    {p.name}: {typeof p.value === 'number' || !isNaN(Number(p.value)) ? Number(p.value).toFixed(1) : p.value}
                     {unit && ` ${unit}`}
                 </p>
             ))}
@@ -68,7 +68,7 @@ function SingleChart({ chart, data }) {
     const chartData = data.map((d) => ({
         ...d,
         time: format(new Date(d.timestamp), 'HH:mm'),
-        value: d[chart.key],
+        value: Number(d[chart.key]),
     }));
 
     return (
@@ -90,7 +90,9 @@ function SingleChart({ chart, data }) {
                 </div>
                 <div className="ml-auto text-right">
                     <span className="text-xl font-bold" style={{ color: chart.color }}>
-                        {chartData.at(-1)?.value?.toFixed(1) ?? '--'}
+                        {chartData.length > 0 && !isNaN(Number(chartData.at(-1)?.value))
+                            ? Number(chartData.at(-1).value).toFixed(1)
+                            : '--'}
                     </span>
                     {chart.unit && (
                         <span className="text-xs text-gray-400 ml-1">{chart.unit}</span>
